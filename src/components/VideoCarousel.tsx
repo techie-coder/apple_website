@@ -65,6 +65,7 @@ const VideoCarousel = () => {
 
     }, [startPlay, videoId, isPlaying, loadedData])
 
+    //@ts-ignore
     const handleLoadedData = (index: number, e: SyntheticEvent<HTMLVideoElement, Event>) =>
         setLoadedData((prevData) => [...prevData, e]);
 
@@ -122,7 +123,8 @@ const VideoCarousel = () => {
     const handleProcess = (type: string, i?: number) => {
         switch (type) {
             case 'video-end':
-                setVideo((prevVideo) => ({ ...prevVideo, isEnd: true, videoId: i + 1 }))
+                if (typeof i === 'number')
+                    setVideo((prevVideo) => ({ ...prevVideo, isEnd: true, videoId: i + 1 }))
                 break;
 
             case 'video-last':
@@ -159,7 +161,7 @@ const VideoCarousel = () => {
                                     preload="auto"
                                     muted
                                     className={`${item.id === 2 && "translate-x-44"} pointer-events-none}`}
-                                    ref={(el) => (videoRef.current[index] = el)}
+                                    ref={(el) => { videoRef.current[index] = el }}
                                     onPlay={() => {
                                         setVideo((prevVideo) => ({
                                             ...prevVideo, isPlaying: true
@@ -185,10 +187,10 @@ const VideoCarousel = () => {
                     {videoRef.current.map((_, index) => (
                         <span
                             key={index}
-                            ref={(el) => (videoDivRef.current[index] = el)}
+                            ref={(el) => { videoDivRef.current[index] = el }}
                             className="relative mx-2 w-3 h-3 bg-gray-200 rounded-full cursor-pointer"
                         >
-                            <span className="absolute w-full h-full rounded-full" ref={(el) => (videoSpanRef.current[index] = el)} />
+                            <span className="absolute w-full h-full rounded-full" ref={(el) => { videoSpanRef.current[index] = el }} />
                         </span>
                     ))}
                 </div>
