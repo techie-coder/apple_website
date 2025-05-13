@@ -6,6 +6,10 @@ import { yellowImg } from "../utils"
 import * as THREE from "three"
 import { Canvas } from "@react-three/fiber"
 import { View } from "@react-three/drei"
+import { models, sizes } from "../constants"
+import { OrbitControls as OrbitControlsImpl } from "three-stdlib";
+import { animateWithGsapTimeleine } from "../constants/animations"
+import { useEffect } from "react"
 
 
 type ModelProps = {
@@ -25,8 +29,8 @@ const Model = () => {
     })
 
     //camera controls
-    const cameraControlSmall = useRef();
-    const cameraControlLarge = useRef();
+    const cameraControlSmall = useRef<OrbitControlsImpl>(null);
+    const cameraControlLarge = useRef<OrbitControlsImpl>(null);
 
     //model
     const small = useRef(new THREE.Group());
@@ -42,6 +46,38 @@ const Model = () => {
             opacity: 1,
         })
     }, [])
+
+    const tl = gsap.timeline({});
+
+    useEffect(() => {
+        if (size === "large") {
+            animateWithGsapTimeleine({
+                timeline: tl,
+                rotationRef: small,
+                rotationState: smallRotation,
+                firstTarget: '#view1',
+                secondTarget: '#view2',
+                animationProps: {
+                    transform: 'translateX(-100%)',
+                    duration: 2
+                }
+            })
+        }
+        if (size === "small") {
+            animateWithGsapTimeleine({
+                timeline: tl,
+                rotationRef: large,
+                rotationState: largeRotation,
+                firstTarget: '#view2',
+                secondTarget: '#view1',
+                animationProps: {
+                    transform: 'translateX(0)',
+                    duration: 2
+                }
+            })
+        }
+    }, [size])
+
     return (
         <section className="common-padding">
             <div className="screen-max-width">
@@ -86,7 +122,18 @@ const Model = () => {
                     <div className="mx-auto w-full">
                         <p className="text-sm font-light text-center mb-5">{model.title}</p>
                         <div className="flex-center">
-                            <ul></ul>
+                            <ul className="color-container">
+                                {models.map((item, index) => (
+                                    <li key={index} className="w-6 h-6 rounded-full mx-2 cursor-pointer" style={{ backgroundColor: item.color[0] }} onClick={() => setModel(item)} />
+                                ))}
+                            </ul>
+                            <button className="size-btn-container">
+                                {sizes.map(({ label, value }) => (
+                                    <span key={label} className="size-btn" style={{ backgroundColor: size === value ? 'white' : 'transparent', color: size === value ? 'black' : 'white' }} onClick={() => setSize(value)}>
+                                        {label}
+                                    </span>
+                                ))}
+                            </button>
                         </div>
                     </div>
                 </div>
