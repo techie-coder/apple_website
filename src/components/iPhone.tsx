@@ -10,7 +10,17 @@ import React, { useRef, useEffect } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
 import * as THREE from 'three'
 
-function Model(props) {
+type ModelProps = {
+    item: {
+        title: string;
+        color: string[];
+        img: string;
+    };
+    scale?: number;
+    size?: string;
+};
+
+function Model(props: ModelProps) {
 
     const texture = useTexture(props.item.img);
 
