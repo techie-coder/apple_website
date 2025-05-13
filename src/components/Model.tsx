@@ -29,8 +29,8 @@ const Model = () => {
     })
 
     //camera controls
-    const cameraControlSmall = useRef<OrbitControlsImpl>(null);
-    const cameraControlLarge = useRef<OrbitControlsImpl>(null);
+    const cameraControlSmall = useRef<OrbitControlsImpl | null>(null);
+    const cameraControlLarge = useRef<OrbitControlsImpl | null>(null);
 
     //model
     const small = useRef(new THREE.Group());
@@ -114,6 +114,7 @@ const Model = () => {
                                 right: 0,
                                 overflow: 'hidden'
                             }}
+                            //@ts-ignore
                             eventSource={document.getElementById('root')}
                         >
                             <View.Port />

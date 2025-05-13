@@ -57,7 +57,8 @@ const VideoCarousel = () => {
                 if (!isPlaying) {
                     videoRef.current[videoId].pause();
                 } else {
-                    startPlay && videoRef.current[videoId].play();
+                    if (startPlay)
+                        videoRef.current[videoId].play();
                 }
             }
         }
@@ -66,7 +67,6 @@ const VideoCarousel = () => {
 
     const handleLoadedData = (index: number, e: SyntheticEvent<HTMLVideoElement, Event>) =>
         setLoadedData((prevData) => [...prevData, e]);
-
 
     useEffect(() => {
 
@@ -106,7 +106,8 @@ const VideoCarousel = () => {
                 anim.restart();
             }
             const animUpdate = () => {
-                anim.progress(videoRef.current[videoId]?.currentTime / hightlightsSlides[videoId].videoDuration);
+                if (videoRef.current[videoId])
+                    anim.progress(videoRef.current[videoId]?.currentTime / hightlightsSlides[videoId].videoDuration);
             }
 
             if (isPlaying) {

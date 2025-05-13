@@ -11,7 +11,7 @@ type ModelViewProps = {
     index: number;
     groupRef: RefObject<THREE.Group>;
     gsapType: string;
-    controlRef: RefObject<OrbitControlsImpl>;
+    controlRef: RefObject<OrbitControlsImpl | null>;
     setRotationState: (rotation: number) => void;
     size: string;
     item: {
